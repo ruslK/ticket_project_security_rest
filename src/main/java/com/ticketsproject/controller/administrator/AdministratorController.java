@@ -1,12 +1,8 @@
 package com.ticketsproject.controller.administrator;
 
-import com.ticketsproject.bootstrap.DataGenerator;
-import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.dto.UserDTO;
-import com.ticketsproject.entities.Role;
 import com.ticketsproject.servises.RoleService;
 import com.ticketsproject.servises.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,9 +38,18 @@ public class AdministratorController {
         return "administrator/createUser";
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/update/{id}")
     public String updateUser(@PathVariable("id") String id, Model model) {
         model.addAttribute("newUser", userService.findById(id));
+        model.addAttribute("allUsers", userService.findAll());
+        model.addAttribute("roles", roleService.findAll());
+        return "administrator/createUser";
+    }
+
+    @GetMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable("id") String id, Model model) {
+        userService.deleteById(id);
+        model.addAttribute("newUser", new UserDTO());
         model.addAttribute("allUsers", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
         return "administrator/createUser";

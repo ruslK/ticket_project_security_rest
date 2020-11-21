@@ -169,10 +169,10 @@
                                 <td th:text="${rowUser.phone}"></td>
                                 <td align="left" th:text="${rowUser.role}"></td>
                                 <td align="center">
-                                    <a th:href="@{/administrator/users/{id} (id = ${rowUser.userName})}" class="btn btn-rounded btn-primary">
+                                    <a th:href="@{/administrator/users/update/{id} (id = ${rowUser.userName})}" class="btn btn-rounded btn-primary">
                                         Update
                                     </a>
-                                    <a th:href="@{#}"
+                                    <a th:href="@{/administrator/users/delete/{id} (id = ${rowUser.userName})}"
                                        class="btn btn-rounded btn-danger">Delete</a>
                                 </td>
                             </tr>
