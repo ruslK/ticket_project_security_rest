@@ -19,7 +19,8 @@
                         <form method="post"
                               th:action="@{/administrator/users}"
                               th:object="${newUser}"
-                              class="needs-validation" action="#"
+                              class="needs-validation" novalidate
+                              action="#"
                               id="createuser">
                             <div class="form-row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
@@ -27,42 +28,49 @@
                                     <input type="text" class="form-control" id="firstName"
                                            name="firstName"
                                            placeholder="Enter First name" value="" required
-                                           minlength="5"
-                                           maxlength="48"
                                            th:field="*{firstName}"
                                     />
-                                    <div class="invalid-feedback">
-                                        Please provide a valid text.
-                                    </div>
+<!--                                    <div class="invalid-feedback">-->
+<!--                                        Please Enter First Name-->
+<!--                                    </div>-->
                                 </div>
+
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                     <label for="lastName">Last name</label>
                                     <input type="text" class="form-control" id="lastName"
                                            name="lastName"
-                                           placeholder="Enter Last name" value="" required
-                                           minlength="5"
-                                           maxlength="48"
+                                           placeholder="Enter First name" value="" required
                                            th:field="*{lastName}"
                                     />
+<!--                                    <div class="invalid-feedback">-->
+<!--                                        Please Enter Last Name-->
+<!--                                    </div>-->
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
-                                    <label for="emailAddress">Email Address</label>
-                                    <input type="email" class="form-control" id="emailAddress"
-                                           name="emailAddress"
-                                           placeholder="Enter Email Address" value="" required
-                                           th:field="*{email}">
+                                    <label for="emailAddress">Email</label>
+                                    <input type="text" class="form-control" id="emailAddress"
+                                           name="email"
+                                           placeholder="Enter First name" value="" required
+                                           th:field="*{userName}"
+                                    />
+<!--                                    <div class="invalid-feedback">-->
+<!--                                        Please Enter Email-->
+<!--                                    </div>-->
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                     <label for="phoneNumber">Phone Number</label>
                                     <input type="text" class="form-control" id="phoneNumber"
                                            name="phoneNumber"
                                            placeholder="Enter Phone Number" value="" required
-                                           minlength="12"
-                                           maxlength="12"
                                            th:field="*{phone}">
+<!--                                           pattern="^\d{10}"-->
+
                                 </div>
+<!--                                <div class="invalid-feedback">-->
+<!--                                    Please Enter 10 Digits Mobile Number-->
+<!--                                </div>-->
                             </div>
                             <div class="form-row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
@@ -70,14 +78,23 @@
                                     <input type="password" class="form-control" id="password"
                                            name="password"
                                            placeholder="Enter Password" value="" required
-                                           th:field="*{password}"
-                                    >
+                                           th:field="*{password}">
+<!--                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}"-->
+
                                 </div>
+<!--                                <div class="invalid-feedback">-->
+<!--                                    Please Enter Password-->
+<!--                                </div>-->
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                     <label for="confirmpassword">Confirm Password</label>
                                     <input type="password" class="form-control" id="confirmpassword"
-                                           placeholder="Enter Confirm Password" value="" required>
+                                           placeholder="Enter Confirm Password" value="" required >
+<!--                                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}"-->
+
                                 </div>
+<!--                                <div class="invalid-feedback">-->
+<!--                                    Please Enter Confirm Password-->
+<!--                                </div>-->
                             </div>
                             <div class="form-row">
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
@@ -103,14 +120,16 @@
                                     <select name="roles" class="form-control" id="role"
                                             placeholder="Select Role"
                                             required th:field="*{role}">
-                                        <option value="default">Select Role</option>
-                                        <option th:each="role: ${roles}" th:value="${role}"
-                                                th:text="${role}"></option>
+                                        <option th:value=" ''" th:text="Select"></option>
+                                        <option th:each="role: ${roles}" th:value="${role.getId()}"
+                                                th:text="${role.getDescription()}"></option>
                                     </select>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary float-right">Save</button>
                             <button type="reset" class="btn btn-secondary float-left">Reset</button>
+
+
                         </form>
                     </div>
                 </div>
@@ -145,13 +164,12 @@
                             <tbody align="center">
                             <tr th:each="rowUser : ${allUsers}">
                                 <td align="left" th:text="${rowUser.firstName + ' ' + rowUser.lastName}"></td>
-                                <td align="left" th:text="${rowUser.email}"></td>
+                                <td align="left" th:text="${rowUser.userName}"></td>
                                 <td th:text="${rowUser.gender}"></td>
                                 <td th:text="${rowUser.phone}"></td>
                                 <td align="left" th:text="${rowUser.role}"></td>
                                 <td align="center">
-                                    <a th:href="@{/administrator/users}" class="btn btn-rounded btn-primary"
-                                       th:object="${rowUser}">
+                                    <a th:href="@{/administrator/users/{id} (id = ${rowUser.userName})}" class="btn btn-rounded btn-primary">
                                         Update
                                     </a>
                                     <a th:href="@{#}"
