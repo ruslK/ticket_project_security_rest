@@ -16,6 +16,5 @@ public class UserDTO {
     private boolean enabled;
     private String phone;
     private String role;
-//    private Gender gender;
-    private String gender;
+    private Gender gender;
 }
