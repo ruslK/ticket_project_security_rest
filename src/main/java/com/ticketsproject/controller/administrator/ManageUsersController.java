@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @Component
 @Controller
 @RequestMapping("/administrator")
-public class AdministratorController {
+public class ManageUsersController {
 
     RoleService roleService;
     UserService userService;
 
-    public AdministratorController(RoleService roleService, UserService userService) {
+    public ManageUsersController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
     }
@@ -54,10 +54,4 @@ public class AdministratorController {
         model.addAttribute("roles", roleService.findAll());
         return "administrator/createUser";
     }
-
-    @GetMapping("/projects")
-    public String getCreateProjectsPage() {
-        return "administrator/createProject";
-    }
-
 }
