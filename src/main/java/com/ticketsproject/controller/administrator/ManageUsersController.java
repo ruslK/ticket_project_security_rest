@@ -32,10 +32,7 @@ public class ManageUsersController {
     @PostMapping("/users")
     public String postUsers(@ModelAttribute("newUser") UserDTO newUser, Model model) {
         userService.save(newUser);
-        model.addAttribute("newUser", new UserDTO());
-        model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("roles", roleService.findAll());
-        return "administrator/createUser";
+        return "redirect:/administrator/users";
     }
 
     @GetMapping("/users/update/{id}")
@@ -47,11 +44,8 @@ public class ManageUsersController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable("id") String id, Model model) {
+    public String deleteUser(@PathVariable("id") String id) {
         userService.deleteById(id);
-        model.addAttribute("newUser", new UserDTO());
-        model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("roles", roleService.findAll());
-        return "administrator/createUser";
+        return "redirect:/administrator/users";
     }
 }

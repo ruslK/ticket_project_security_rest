@@ -2,12 +2,12 @@ package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.servises.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class UserServiceImpl extends AbstractMapService<UserDTO, String> implements UserService {
 
     @Override
@@ -33,5 +33,9 @@ public class UserServiceImpl extends AbstractMapService<UserDTO, String> impleme
     @Override
     public void delete(UserDTO object) {
         super.delete(object);
+    }
+
+    public List<UserDTO> getManagers() {
+        return this.findAll();
     }
 }

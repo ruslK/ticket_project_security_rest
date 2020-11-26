@@ -3,10 +3,11 @@ package com.ticketsproject.servisesImpl;
 import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.servises.RoleService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 public class RoleServiceImpl extends AbstractMapService<RoleDTO, Long> implements RoleService {
 
 
