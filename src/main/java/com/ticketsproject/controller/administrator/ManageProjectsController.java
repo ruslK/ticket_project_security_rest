@@ -33,7 +33,6 @@ public class ManageProjectsController {
     @PostMapping("/projects")
     public String postNewProject(@ModelAttribute ProjectDTO newProject) {
         projectService.save(newProject);
-        newProject.setProjectStatus(Status.OPEN);
         return "redirect:/administrator/projects";
     }
 

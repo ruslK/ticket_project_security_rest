@@ -30,5 +30,9 @@ public class AbstractMapService <T, ID> {
         map.entrySet().removeIf(entry -> entry.getValue().equals(object));
     }
 
+    void update(ID id,T object){
+        map.entrySet().removeIf(entry -> entry.getValue().equals(object));
+        map.put(id,object);
+    }
 
 }
