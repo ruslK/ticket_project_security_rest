@@ -119,16 +119,16 @@
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 mb-2">
                                     <label for="role">Role</label>
-                                    <select name="role" class="form-control" id="role"
+                                    <select name="role" th:filed="*{role}" class="form-control" id="role"
                                             placeholder="Select Role"
                                             required>
-                                        <option th:value=" ''" th:text="Select"></option>
                                         <span th:if="${newUser.role != null}">
                                             <option th:each="role: ${roles}" th:value="${role.id}"
                                                     th:text="${role.description}"
                                                     th:selected="${role.id} == ${newUser.role.id}"></option>
                                         </span>
                                         <span th:if="${newUser.role == null}">
+                                            <option th:value=" ''" th:text="Select"></option>
                                             <option th:each="role: ${roles}" th:value="${role.id}"
                                                     th:text="${role.description}"
                                                     ></option>

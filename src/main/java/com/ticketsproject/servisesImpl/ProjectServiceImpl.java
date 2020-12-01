@@ -1,8 +1,8 @@
 package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.ProjectDTO;
+import com.ticketsproject.enums.Status;
 import com.ticketsproject.servises.ProjectService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +33,10 @@ public class ProjectServiceImpl extends AbstractMapService<ProjectDTO, String> i
     @Override
     public void delete(ProjectDTO object) {
         super.delete(object);
+    }
 
+    @Override
+    public void complete(String id) {
+        super.findById(id).setProjectStatus(Status.COMPLETE);
     }
 }

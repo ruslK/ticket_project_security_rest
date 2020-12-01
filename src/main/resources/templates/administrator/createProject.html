@@ -58,13 +58,13 @@
                                             required
                                             th:field="*{assignedManager}"
                                     >
-                                        <option value=" ''">Select Manager</option>
                                         <span th:if="${newProject.assignedManager != null}">
                                             <option th:each="manager : ${managers}" th:value="${manager.userName}"
                                                     th:text="${manager.firstName + ' ' + manager.lastName}"
                                                     th:selected="${manager.userName} == ${newProject.assignedManager.userName}"></option>
                                         </span>
                                         <span th:if="${newProject.assignedManager == null}">
+                                            <option value=" ''">Select Manager</option>
                                             <option th:each="manager : ${managers}" th:value="${manager.userName}"
                                                     th:text="${manager.firstName + ' ' + manager.lastName}"
                                             ></option>
@@ -99,7 +99,6 @@
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary float-right">Save</button>
-                            <button type="reset" class="btn btn-secondary float-left">Reset</button>
                         </form>
                     </div>
                 </div>
@@ -128,7 +127,7 @@
                                 <td align="left" th:text="${project.projectStatus}"></td>
                                 <td align="center">
                                     <a th:href="@{/administrator/projects/update/{projectCode} (projectCode = ${project.projectCode})}"
-                                            class="btn btn-rounded btn-primary"
+                                       class="btn btn-rounded btn-primary"
                                        data-target="#addingProjectModal">
                                         Update
                                     </a>

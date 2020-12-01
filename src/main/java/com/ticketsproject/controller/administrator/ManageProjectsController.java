@@ -1,7 +1,6 @@
 package com.ticketsproject.controller.administrator;
 
 import com.ticketsproject.dto.ProjectDTO;
-import com.ticketsproject.entities.User;
 import com.ticketsproject.enums.Status;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.UserService;
@@ -26,7 +25,7 @@ public class ManageProjectsController {
     @GetMapping("/projects")
     public String getCreateProject(Model model) {
         model.addAttribute("newProject", new ProjectDTO());
-        model.addAttribute("managers", userService.findAll());
+        model.addAttribute("managers", userService.findManagers());
         model.addAttribute("allProject", projectService.findAll());
         return "administrator/createProject";
     }
@@ -54,7 +53,7 @@ public class ManageProjectsController {
 
     @GetMapping("/projects/complete/{projectCode}")
     public String completeProject(@PathVariable("projectCode") String projectCode) {
-        projectService.findById(projectCode).setProjectStatus(Status.COMPLETE);
+        projectService.complete(projectCode);
         return "redirect:/administrator/projects";
     }
 

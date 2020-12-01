@@ -2,7 +2,6 @@ package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.servises.RoleService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,5 +35,4 @@ public class RoleServiceImpl extends AbstractMapService<RoleDTO, Long> implement
     public RoleDTO save(RoleDTO role) {
         return super.save(role.getId(), role);
     }
-
 }
