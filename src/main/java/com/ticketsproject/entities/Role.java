@@ -5,11 +5,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import java.util.List;
+import java.util.ArrayList;
+
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Role {
-    private int id;
+@Table (name = "roles")
+public class Role extends BaseEntity{
     private String description;
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private List<User> users = new ArrayList<>();
 }

@@ -24,8 +24,8 @@ public class ManageUsersController {
     @GetMapping("/users")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new UserDTO());
-        model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("allUsers", userService.listAllUsers());
+        model.addAttribute("roles", roleService.listAllRoles());
         return "administrator/createUser";
     }
 
@@ -37,15 +37,15 @@ public class ManageUsersController {
 
     @GetMapping("/users/update/{id}")
     public String updateUser(@PathVariable("id") String id, Model model) {
-        model.addAttribute("newUser", userService.findById(id));
-        model.addAttribute("allUsers", userService.findAll());
-        model.addAttribute("roles", roleService.findAll());
+        model.addAttribute("newUser", userService.findByUserName(id));
+        model.addAttribute("allUsers", userService.listAllUsers());
+        model.addAttribute("roles", roleService.listAllRoles());
         return "administrator/createUser";
     }
 
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable("id") String id) {
-        userService.deleteById(id);
+        userService.delete(id);
         return "redirect:/administrator/users";
     }
 }

@@ -2,5 +2,12 @@ package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.RoleDTO;
 
-public interface RoleService extends GrudService<RoleDTO, Long> {
+import java.util.List;
+
+public interface RoleService {
+
+    List<RoleDTO> listAllRoles();
+
+    RoleDTO findById(long id);
+
 }

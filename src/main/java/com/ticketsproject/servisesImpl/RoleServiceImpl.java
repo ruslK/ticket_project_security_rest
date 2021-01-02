@@ -1,42 +1,34 @@
 package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.RoleDTO;
+import com.ticketsproject.entities.Role;
+import com.ticketsproject.mapper.RoleMapper;
+import com.ticketsproject.repository.RoleRepository;
 import com.ticketsproject.servises.RoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class RoleServiceImpl extends AbstractMapService<RoleDTO, Long> implements RoleService {
+public class RoleServiceImpl implements RoleService {
 
+    private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
 
-    @Override
-    public RoleDTO findById(Long id) {
-        return super.findById(id);
+    public RoleServiceImpl(RoleRepository roleRepository, RoleMapper roleMapper) {
+        this.roleRepository = roleRepository;
+        this.roleMapper = roleMapper;
     }
 
     @Override
-    public List<RoleDTO> findAll() {
-        return super.findAll();
+    public List<RoleDTO> listAllRoles() {
+        List<Role> roles = roleRepository.findAll();
+        return  roles.stream().map(roleMapper::convertToRoleDTO).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteById(Long id) {
-        super.deleteById(id);
-    }
-
-    @Override
-    public void delete(RoleDTO object) {
-        super.delete(object);
-    }
-
-    @Override
-    public RoleDTO save(RoleDTO role) {
-        return super.save(role.getId(), role);
-    }
-
-    @Override
-    public void update(RoleDTO object) {
-        super.update(object.getId(), object);
+    public RoleDTO findById(long id) {
+        return roleMapper.convertToRoleDTO(roleRepository.findById(id).get());
     }
 }

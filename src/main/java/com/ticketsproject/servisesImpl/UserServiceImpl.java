@@ -1,57 +1,62 @@
 package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.UserDTO;
+import com.ticketsproject.entities.User;
+import com.ticketsproject.mapper.UserMapper;
+import com.ticketsproject.repository.UserRepository;
 import com.ticketsproject.servises.UserService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl extends AbstractMapService<UserDTO, String> implements UserService {
+public class UserServiceImpl implements UserService {
 
-    @Override
-    public UserDTO save(UserDTO user) {
-        return super.save(user.getUserName(), user);
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public UserDTO findById(String id) {
-        return super.findById(id);
+    public List<UserDTO> listAllUsers() {
+        return userRepository.findAll(Sort.by("firstName")).stream()
+                .map(userMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<UserDTO> findAll() {
-        return super.findAll();
+    public UserDTO findByUserName(String username) {
+        return userMapper.convertToDTO(userRepository.findByUserName(username));
     }
 
     @Override
-    public void deleteById(String id) {
-        super.deleteById(id);
+    public void save(UserDTO dto) {
+        User user = userRepository.findByUserName(dto.getUserName());
 
+        if (user != null) {
+            Long id = user.getId();
+            System.out.println("User is present in DB: " + id);
+            User updatedUser = userMapper.convertToEntity(dto);
+            updatedUser.setId(id);
+            userRepository.save(updatedUser);
+        } else {
+            userRepository.save(userMapper.convertToEntity(dto));
+        }
     }
 
     @Override
-    public void delete(UserDTO object) {
-        super.delete(object);
-    }
-
-    public List<UserDTO> getManagers() {
-        return this.findAll();
+    public UserDTO update(UserDTO dto) {
+        return null;
     }
 
     @Override
-    public List<UserDTO> findManagers() {
-        return super.findAll().stream().filter(user -> user.getRole().getId() == 2).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserDTO> findEmployees() {
-        return super.findAll().stream().filter(user -> user.getRole().getId() == 3).collect(Collectors.toList());
-    }
-
-    @Override
-    public void update(UserDTO object) {
-        super.update(object.getUserName(), object);
+    public void delete(String username) {
+        userRepository.delete(userRepository.findByUserName(username));
     }
 }
