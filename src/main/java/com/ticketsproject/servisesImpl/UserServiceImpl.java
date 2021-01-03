@@ -38,10 +38,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(UserDTO dto) {
         User user = userRepository.findByUserName(dto.getUserName());
-
         if (user != null) {
             Long id = user.getId();
-            System.out.println("User is present in DB: " + id);
             User updatedUser = userMapper.convertToEntity(dto);
             updatedUser.setId(id);
             userRepository.save(updatedUser);
@@ -58,5 +56,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String username) {
         userRepository.delete(userRepository.findByUserName(username));
+    }
+
+    @Override
+    public List<UserDTO> findAllManagers() {
+        return userRepository.listOfManagers().stream()
+                .map(userMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 }
