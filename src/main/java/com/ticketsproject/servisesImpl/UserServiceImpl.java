@@ -64,4 +64,11 @@ public class UserServiceImpl implements UserService {
                 .map(userMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<UserDTO> findEmployees() {
+        return userRepository.listOfEmployees().stream()
+                .map(userMapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
 }

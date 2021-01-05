@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -28,4 +30,7 @@ public class Project extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User assignedManager;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Task> taskList = new ArrayList<>();
 }

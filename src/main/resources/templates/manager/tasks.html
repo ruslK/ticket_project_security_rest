@@ -37,7 +37,7 @@
                                                     th:selected="${pr.projectName} == ${newTask.project.projectName}"></option>
                                         </span>
                                         <span th:if="${newTask.project == null}">
-                                            <option value=" ''">Select Manager</option>
+                                            <option value=" ''">Select Project</option>
                                            <option th:each="pr : ${projects}" th:value="${pr.projectCode}"
                                                    th:text="${pr.projectName}"
                                            ></option>
@@ -99,6 +99,7 @@
                                width="100%">
                             <thead align="center">
                             <tr>
+                                <th class="th-">Task ID</th>
                                 <th class="th-">Project</th>
                                 <th class="th-sm">Task Subject</th>
                                 <th class="th-sm">Assigned Employee</th>
@@ -110,6 +111,7 @@
                             </thead>
                             <tbody align="center">
                             <tr th:each="task : ${allTask}">
+                                <td align="center" th:text="${task.getId()}"></td>
                                 <td align="left"
                                     th:text="${task.project.projectCode + '-' + task.project.projectName}"></td>
                                 <td align="left" th:text="${task.taskSubject}"></td>

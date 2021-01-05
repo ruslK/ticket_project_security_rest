@@ -36,4 +36,6 @@ public class User extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     private List<Project> projects = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Task> taskList = new ArrayList<>();
 }
