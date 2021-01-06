@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User findByUserName(String username);
+    User findByUserName  (String username);
 
     @Query("select u from User u JOIN Role r on r.id = u.role.id " +
             "where r.description = 'Manager'")

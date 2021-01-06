@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -24,4 +21,20 @@ public class BaseEntity {
     private Long insertUserId;
     private LocalDateTime lastUpdateDateTime;
     private Long lustUpdateUserId;
+    private Boolean isDeleted = false;
+
+    @PrePersist
+    private void onPrePersist() {
+        this.insertDateTime = LocalDateTime.now();
+        this.lastUpdateDateTime = LocalDateTime.now();
+        this.insertUserId = 1L;
+        this.lustUpdateUserId = 1L;
+    }
+
+    @PreUpdate
+    private void onPreUpdate() {
+        this.lastUpdateDateTime = LocalDateTime.now();
+        this.lustUpdateUserId = 1L;
+    }
+
 }

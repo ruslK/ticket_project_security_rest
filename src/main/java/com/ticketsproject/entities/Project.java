@@ -4,6 +4,7 @@ import com.ticketsproject.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Where(clause = "is_deleted=false")
 public class Project extends BaseEntity {
 
     private String projectName;
@@ -27,10 +29,7 @@ public class Project extends BaseEntity {
     private int completeCount;
     private int inCompleteCount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User assignedManager;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Task> taskList = new ArrayList<>();
 }

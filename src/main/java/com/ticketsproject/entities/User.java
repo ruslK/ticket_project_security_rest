@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Where;
 import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
+@Where(clause = "is_deleted=false")
 public class User extends BaseEntity {
 
     private String firstName;
@@ -29,13 +31,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Project> projects = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Task> taskList = new ArrayList<>();
 }
