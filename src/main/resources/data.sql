@@ -21,4 +21,4 @@ INSERT INTO projects (insert_date_time, insert_user_id, is_deleted, last_update_
 values ('2021-01-05 00:00:00', 1, false, '2021-01-05 00:00:00', 1, 'Selenium', 'SDET-001', '05/05/2020', '07/05/2020',
         'SDET Course', 'OPEN', 1, 0, 0),
        ('2021-01-05 00:00:00', 1, false, '2021-01-05 00:00:00', 1, 'JAVA_001', 'SDET-002', '05/05/2020', '07/05/2020',
-        'SDET Course', 'OPEN', 2, 0, 0);
+        'SDET Course', 'IN_PROGRESS', 2, 0, 0);

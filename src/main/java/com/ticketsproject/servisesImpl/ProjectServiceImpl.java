@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,7 +54,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteByProjectCode(String projectCode) {
-        projectRepository.delete(projectRepository.findAllByProjectCode(projectCode));
+        Project project = projectRepository.findAllByProjectCode(projectCode);
+        project.setIsDeleted(true);
+        projectRepository.save(project);
     }
 
     @Override
@@ -66,5 +69,12 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = projectRepository.findAllByProjectCode(dto.getProjectCode());
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+    }
+
+    @Override
+    public List<ProjectDTO> getAllProjectByManagerId(Long id) {
+        return projectRepository.findAllByManagerId(id).stream()
+                .map(projectMapper :: convertToDto)
+                .collect(Collectors.toList());
     }
 }

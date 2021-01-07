@@ -38,7 +38,7 @@
                             <td th:text="${#temporals.format(project.startDate, 'MM/dd/yyyy') + ' to ' +
                             #temporals.format(project.endDate, 'MM/dd/yyyy')}"></td>
                             <td th:text="${project.assignedManager.firstName + ' ' + project.assignedManager.lastName}"></td>
-                            <td th:text="${project.inCompleteCount + '/' + project.completeCount}"></td>
+                            <td th:text="${project.getInCompleteCount() + '/' + project.getCompleteCount()}"></td>
                             <td align="left" th:text="${project.projectStatus.getValue()}"></td>
                             <td align="center">
                                 <a th:href="@{/manager/status/update/{id} (id = ${project.projectCode})}"

@@ -2,7 +2,6 @@ package com.ticketsproject.mapper;
 
 import com.ticketsproject.dto.ProjectDTO;
 import com.ticketsproject.entities.Project;
-import com.ticketsproject.entities.User;
 import com.ticketsproject.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -18,10 +17,7 @@ public class ProjectMapper {
     }
 
     public Project convertToEntity(ProjectDTO dto) {
-        User manager = userRepository.findByUserName(dto.getAssignedManager().getUserName());
-        Project project = modelMapper.map(dto, Project.class);
-        project.setAssignedManager(manager);
-        return project;
+        return modelMapper.map(dto, Project.class);
     }
 
     public ProjectDTO convertToDto(Project entity) {

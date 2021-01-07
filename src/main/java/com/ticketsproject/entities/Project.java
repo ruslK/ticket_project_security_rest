@@ -8,8 +8,6 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "projects")
@@ -20,6 +18,7 @@ import java.util.List;
 public class Project extends BaseEntity {
 
     private String projectName;
+    @Column(unique = true)
     private String projectCode;
     private LocalDate startDate;
     private LocalDate endDate;
