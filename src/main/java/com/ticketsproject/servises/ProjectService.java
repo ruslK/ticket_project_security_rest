@@ -15,8 +15,10 @@ public interface ProjectService {
 
     ProjectDTO findByProjectCode(String projectCode);
 
-    void complete(ProjectDTO dto);
+    void complete(String projectCode);
 
-    List<ProjectDTO> getAllProjectByManagerId (Long id);
+    List<ProjectDTO> getAllProjectByManagerId ();
+
+    List<ProjectDTO> listOfProjectsNonComplete();
 
 }

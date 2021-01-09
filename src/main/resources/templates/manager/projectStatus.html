@@ -41,12 +41,16 @@
                             <td th:text="${project.getInCompleteCount() + '/' + project.getCompleteCount()}"></td>
                             <td align="left" th:text="${project.projectStatus.getValue()}"></td>
                             <td align="center">
-                                <a th:href="@{/manager/status/update/{id} (id = ${project.projectCode})}"
+                                <a th:if="${project.getInCompleteCount() == 0 && project.projectStatus.value != 'Completed'}"
+                                   th:href="@{/manager/status/update/{id} (id = ${project.projectCode})}"
                                    class="btn btn-rounded btn-primary">
                                     Complete
                                 </a>
+                                <a th:if="${project.getInCompleteCount() > 0 || project.projectStatus.value == 'Completed'}"
+                                   class="btn btn-rounded btn-primary disabled-button">
+                                    Complete
+                                </a>
                             </td>
-<!--                        </tr>-->
                         </tbody>
                     </table>
                 </div>

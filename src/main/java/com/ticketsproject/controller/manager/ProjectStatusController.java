@@ -1,8 +1,5 @@
 package com.ticketsproject.controller.manager;
 
-import com.ticketsproject.dto.UserDTO;
-import com.ticketsproject.entities.Project;
-import com.ticketsproject.enums.Status;
 import com.ticketsproject.mapper.ProjectMapper;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.TaskService;
@@ -32,15 +29,14 @@ public class ProjectStatusController {
 
     @GetMapping("/status")
     public String getListProjectStatuses(Model model) {
-        UserDTO manager = userService.findByUserName("Mikaa@submit");
-        model.addAttribute("projects", projectService.getAllProjectByManagerId(manager.getId()));
+        model.addAttribute("projects", projectService.getAllProjectByManagerId());
         return "manager/projectStatus";
     }
 
 
-    @GetMapping("/status/update/{id}")
-    public String completeProject(@PathVariable String id) {
-        projectService.complete(projectService.findByProjectCode(id));
+    @GetMapping("/status/update/{projectCode}")
+    public String completeProject(@PathVariable String projectCode) {
+        projectService.complete(projectCode);
         return "redirect:/manager/status";
     }
 }

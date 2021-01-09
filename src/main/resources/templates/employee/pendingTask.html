@@ -13,13 +13,38 @@
     <div class="dashboard-wrapper">
         <div class="dashboard-ecommerce">
             <div class="container-fluid dashboard-content">
-                <!-- ============================================================== -->
-                <!-- pageheader  -->
-                <!-- ============================================================== -->
-                <h5>Tasks</h5>
-                <!-- ============================================================== -->
-                <!-- end pageheader  -->
-                <!-- ============================================================== -->
+                <header class="panel-heading">
+                    <h2>Employee Pending Tasks</h2>
+                </header>
+                <div class="card-body">
+                    <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+                           width="100%">
+                        <thead align="center">
+                        <tr>
+                            <th class="th-">Project</th>
+                            <th class="th-sm">Task Subject</th>
+                            <th class="th-sm">Assigned Employee</th>
+                            <th class="th-sm">Assigned Date</th>
+                            <th class="th-sm">Status</th>
+                            <th class="th-sm">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center">
+                        <tr th:each="task : ${tasks}">
+                            <td th:text="${task.project.projectCode +'-'+task.project.projectName}"/>
+                            <td th:text="${task.taskSubject}"/>
+                            <td th:text="${task.assignedEmployee.firstName +' '+ task.assignedEmployee.lastName}"/>
+                            <td th:text="${#temporals.format(task.assignedDate, 'MM/dd/yyyy')}"/>
+                            <td th:text="${task.status}"/>
+                            <td align="center">
+                                <a th:href="@{/employee/tasks/update/{id} (id=${task.id})}"
+                                   class="btn btn-rounded btn-primary">
+                                    Update
+                                </a>
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -1,6 +1,8 @@
 package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.TaskDTO;
+import com.ticketsproject.entities.Project;
+import com.ticketsproject.enums.Status;
 
 import java.util.List;
 
@@ -13,4 +15,14 @@ public interface TaskService {
     List<TaskDTO> listOfTasks();
 
     void save(TaskDTO dto);
+
+    int totalNonCompletedTask(String projectCode);
+
+    int totalCompletedTask(String projectCode);
+
+    void deleteByProject(Project project);
+
+    List<TaskDTO> listAllTaskByStatusIsNot(Status status);
+
+    List<TaskDTO> listAllTaskByProjectManager();
 }

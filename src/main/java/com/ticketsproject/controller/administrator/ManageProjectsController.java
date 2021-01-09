@@ -50,8 +50,8 @@ public class ManageProjectsController {
     }
 
     @GetMapping("/projects/complete/{projectCode}")
-    public String completeProject(@PathVariable("projectCode") String id) {
-        projectService.complete(projectService.findByProjectCode(id));
+    public String completeProject(@PathVariable("projectCode") String projectCode) {
+        projectService.complete(projectCode);
         return "redirect:/administrator/projects";
     }
 }

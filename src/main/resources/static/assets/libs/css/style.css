@@ -7252,6 +7252,12 @@ html, body {
     align-items: center;
 }
 
+.disabled-button {
+    background: #7e7c7c;
+    color: black;
+    border-color: #cdcdcd;
+    cursor: not-allowed !important;
+}
 
 /* Custom, iPhone Retina */
 @media only screen and (max-width: 320px) {
