@@ -1,6 +1,7 @@
 package com.ticketsproject.controller.manager;
 
 import com.ticketsproject.dto.TaskDTO;
+import com.ticketsproject.enums.Status;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
@@ -49,7 +50,7 @@ public class TasksController {
         model.addAttribute("newTask", taskService.findTaskById(Long.parseLong(id)));
         model.addAttribute("projects", projectService.listOfProjectsNonComplete());
         model.addAttribute("employees", userService.findEmployees());
-        model.addAttribute("allTask", taskService.listOfTasks());
+        model.addAttribute("allTask", taskService.listAllTaskByStatusIsNot(Status.COMPLETE));
         return "manager/tasks";
     }
 }

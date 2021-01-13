@@ -35,11 +35,8 @@ public class EmployeeController {
 
     @GetMapping("/tasks/update/{id}")
     public String updateEmployeeTask(@PathVariable("id") Long id, Model model) {
-        TaskDTO task = taskService.findTaskById(id);
-        List<TaskDTO> tasks = taskService.listAllTaskByProjectManager();
-
-        model.addAttribute("task", task);
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("task", taskService.findTaskById(id));
+        model.addAttribute("allTask", taskService.listAllTaskByStatusIsNot(Status.COMPLETE));
         model.addAttribute("employees", userService.findEmployees());
         model.addAttribute("projects", projectService.listOfProjectsNonComplete());
         model.addAttribute("statutes", Status.values());
@@ -56,7 +53,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/archive")
-    public String getCreateUserPage() {
+    public String archive(Model model) {
+        List<TaskDTO> tasks = taskService.listAllTaskByStatus(Status.COMPLETE);
+        model.addAttribute("tasks", tasks);
         return "employee/archive";
     }
 

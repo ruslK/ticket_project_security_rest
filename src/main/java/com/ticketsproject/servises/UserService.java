@@ -1,6 +1,8 @@
 package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.UserDTO;
+import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.TicketingProjectException;
 
 import java.util.List;
 
@@ -14,9 +16,11 @@ public interface UserService {
 
     UserDTO update(UserDTO dto);
 
-    void delete(String username);
+    void delete(String username) throws TicketingProjectException;
 
     List<UserDTO> findAllManagers();
 
     List<UserDTO> findEmployees();
+
+    Boolean checkIfUserCanBeDelete(User user);
 }

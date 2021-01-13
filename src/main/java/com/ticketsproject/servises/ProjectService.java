@@ -1,10 +1,10 @@
 package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.ProjectDTO;
+import com.ticketsproject.entities.User;
 
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProjectService {
     List<ProjectDTO> listOfProjects();
@@ -17,8 +17,10 @@ public interface ProjectService {
 
     void complete(String projectCode);
 
-    List<ProjectDTO> getAllProjectByManagerId ();
+    List<ProjectDTO> getAllProjectByManagerId();
 
     List<ProjectDTO> listOfProjectsNonComplete();
+
+    List<ProjectDTO> getAllByAssignedManager(User user);
 
 }

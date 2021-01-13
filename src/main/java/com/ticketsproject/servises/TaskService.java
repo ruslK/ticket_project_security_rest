@@ -2,6 +2,7 @@ package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.TaskDTO;
 import com.ticketsproject.entities.Project;
+import com.ticketsproject.entities.User;
 import com.ticketsproject.enums.Status;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface TaskService {
     List<TaskDTO> listAllTaskByStatusIsNot(Status status);
 
     List<TaskDTO> listAllTaskByProjectManager();
+
+    List<TaskDTO> listAllTaskByStatus(Status status);
+
+    List<TaskDTO> getAllTaskByEmployee(User user);
 }

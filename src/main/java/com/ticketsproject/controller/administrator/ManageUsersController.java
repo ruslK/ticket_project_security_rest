@@ -1,6 +1,7 @@
 package com.ticketsproject.controller.administrator;
 
 import com.ticketsproject.dto.UserDTO;
+import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.servises.RoleService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,13 @@ public class ManageUsersController {
 
     @GetMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable("id") String id) {
-        userService.delete(id);
-        return "redirect:/administrator/users";
+        try {
+            userService.delete(id);
+            return "redirect:/administrator/users";
+        } catch (TicketingProjectException e) {
+            e.printStackTrace();
+            return "redirect:/administrator/users";
+        }
+
     }
 }

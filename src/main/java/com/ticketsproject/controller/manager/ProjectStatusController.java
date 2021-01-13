@@ -1,9 +1,6 @@
 package com.ticketsproject.controller.manager;
 
-import com.ticketsproject.mapper.ProjectMapper;
 import com.ticketsproject.servises.ProjectService;
-import com.ticketsproject.servises.TaskService;
-import com.ticketsproject.servises.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/manager")
 public class ProjectStatusController {
 
-    private final TaskService taskService;
     private final ProjectService projectService;
-    private final UserService userService;
-    private final ProjectMapper projectMapper;
 
 
-    public ProjectStatusController(TaskService taskService, ProjectService projectService, UserService userService, ProjectMapper projectMapper) {
-        this.taskService = taskService;
+    public ProjectStatusController(ProjectService projectService) {
         this.projectService = projectService;
-        this.userService = userService;
-        this.projectMapper = projectMapper;
     }
 
     @GetMapping("/status")
