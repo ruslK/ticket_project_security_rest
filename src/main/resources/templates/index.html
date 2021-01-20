@@ -9,23 +9,26 @@
 <div class="splash-container login-wrapper">
     <div class="card">
         <div class="card-header text-center">
-            <img
-                    class="logo-img"
-                    src="/images/Cybertek_Logo.png"
-                    height="45"
-                    alt="logo"
-            />
+            <img class="logo-img" src="/images/Cybertek_Logo.png" height="45" alt="logo"/>
         </div>
 
         <div class="card-body">
-            <form action="/welcome">
+            <form th:action="@{/login}" method="post">
                 <div class="form-group">
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        Invalid username and password.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                    </div>
+
                     <input
                             class="form-control form-control-lg"
                             id="username"
                             type="text"
                             placeholder="Username"
                             autocomplete="off"
+                            name="username"
                     />
                 </div>
 
@@ -35,6 +38,7 @@
                             id="password"
                             type="password"
                             placeholder="Password"
+                            name="password"
                     />
                 </div>
 

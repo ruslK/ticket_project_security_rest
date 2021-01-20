@@ -22,6 +22,16 @@ import java.util.Set;
 @Where(clause = "is_deleted=false")
 public class User extends BaseEntity {
 
+    public User(String firstName, String lastName, String userName, String phone, String password, boolean enabled, Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.phone = phone;
+        this.password = password;
+        this.enabled = enabled;
+        this.gender = gender;
+    }
+
     private String firstName;
     private String lastName;
     private String userName;
@@ -31,7 +41,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 }

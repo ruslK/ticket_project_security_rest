@@ -4,6 +4,7 @@ import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.servises.RoleService;
 import com.ticketsproject.servises.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/administrator")
 public class ManageUsersController {
 
-    RoleService roleService;
-    UserService userService;
+    private final RoleService roleService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public ManageUsersController(RoleService roleService, UserService userService) {
+    public ManageUsersController(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
         this.roleService = roleService;
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -32,6 +35,7 @@ public class ManageUsersController {
 
     @PostMapping("/users")
     public String postUsers(@ModelAttribute("newUser") UserDTO newUser, Model model) {
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userService.save(newUser);
         return "redirect:/administrator/users";
     }
