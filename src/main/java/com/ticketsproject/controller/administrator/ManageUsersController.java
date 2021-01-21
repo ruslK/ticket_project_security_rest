@@ -17,12 +17,10 @@ public class ManageUsersController {
 
     private final RoleService roleService;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public ManageUsersController(RoleService roleService, UserService userService, PasswordEncoder passwordEncoder) {
+    public ManageUsersController(RoleService roleService, UserService userService) {
         this.roleService = roleService;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -35,7 +33,6 @@ public class ManageUsersController {
 
     @PostMapping("/users")
     public String postUsers(@ModelAttribute("newUser") UserDTO newUser, Model model) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userService.save(newUser);
         return "redirect:/administrator/users";
     }

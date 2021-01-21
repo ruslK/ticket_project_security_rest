@@ -1,18 +1,19 @@
-package com.ticketsproject.security;
+package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.entities.User;
 import com.ticketsproject.repository.UserRepository;
+import com.ticketsproject.entities.common.UserPrinciple;
+import com.ticketsproject.servises.SecurityService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserPrincipleDetailsService implements UserDetailsService {
+public class SecurityServiceImpl implements SecurityService {
 
     private final UserRepository userRepository;
 
-    public UserPrincipleDetailsService(UserRepository userRepository) {
+    public SecurityServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

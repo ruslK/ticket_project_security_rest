@@ -1,4 +1,4 @@
-package com.ticketsproject.security;
+package com.ticketsproject.entities.common;
 
 import com.ticketsproject.entities.User;
 import org.springframework.security.core.GrantedAuthority;

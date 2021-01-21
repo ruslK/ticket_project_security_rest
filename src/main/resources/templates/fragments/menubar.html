@@ -18,17 +18,17 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav flex-column">
-                        <li class="nav-item" sec:authorize="hasAuthority('Admin')">
+                        <li class="nav-item" sec:authorize="hasAnyAuthority('Admin', 'Manager')">
                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
                                data-target="#menuAdministrator" aria-controls="menuAdministrator"><i
                                     class="fas fa-diagnoses"></i>Administrator</a>
                             <div id="menuAdministrator" class="submenu collapse show" style="">
                                 <ul class="nav flex-column">
                                     <ul class="nav flex-column">
-                                        <li class="nav-item">
+                                        <li class="nav-item" sec:authorize="hasAuthority('Admin')">
                                             <a class="nav-link" th:href="@{/administrator/users}">Manage Users</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" sec:authorize="hasAuthority('Manager')">
                                             <a class="nav-link" th:href="@{/administrator/projects}">Manage Projects</a>
                                         </li>
                                     </ul>

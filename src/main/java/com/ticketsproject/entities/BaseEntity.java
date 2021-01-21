@@ -1,5 +1,6 @@
 package com.ticketsproject.entities;
 
+import com.ticketsproject.servises.AuthenticationFacadeService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

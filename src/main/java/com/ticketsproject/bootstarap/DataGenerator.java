@@ -34,10 +34,10 @@
 //        roleRepository.save(rManager);
 //        roleRepository.save(eEmployee);
 //
-//        User admin = new User("Admin", "Admin", "admin@admin", "5434555454",
+//        User admin = new User("Admin", "Admin", "admin", "5434555454",
 //                passwordEncoder.encode("admin"), true, Gender.MALE);
 //
-//        User manager = new User("Manager", "Manager", "manager@manger", "5434555454",
+//        User manager = new User("Manager", "Manager", "manager", "5434555454",
 //                passwordEncoder.encode("manager"), true, Gender.FEMALE);
 //
 //        admin.setRole(rAdmin);

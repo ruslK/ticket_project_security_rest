@@ -12,6 +12,7 @@ import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,15 +25,17 @@ public class UserServiceImpl implements UserService {
     private final MapperUtil mapperUtil;
     private final TaskService taskService;
     private final ProjectService projectService;
+    private final PasswordEncoder passwordEncoder;
 
 
     public UserServiceImpl(UserRepository userRepository,
                            MapperUtil mapperUtil, TaskService taskService,
-                           @Lazy ProjectService projectService) {
+                           @Lazy ProjectService projectService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.taskService = taskService;
         this.projectService = projectService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -49,7 +52,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO dto) {
+        dto.setEnabled(true);
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         User user = userRepository.findByUserName(dto.getUserName());
+
         if (user != null) {
             Long id = user.getId();
             User updatedUser = mapperUtil.convert(dto, new User());
