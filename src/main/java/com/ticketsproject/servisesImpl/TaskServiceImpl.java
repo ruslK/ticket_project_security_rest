@@ -8,9 +8,9 @@ import com.ticketsproject.enums.Status;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.TaskRepository;
 import com.ticketsproject.repository.UserRepository;
-import com.ticketsproject.servises.AuthenticationFacadeService;
 import com.ticketsproject.servises.TaskService;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,14 +23,12 @@ public class TaskServiceImpl implements TaskService {
     private final MapperUtil mapperUtil;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
-    private final AuthenticationFacadeService auth;
 
     public TaskServiceImpl(MapperUtil mapperUtil, TaskRepository taskRepository,
-                           UserRepository userRepository, AuthenticationFacadeService auth) {
+                           UserRepository userRepository) {
         this.mapperUtil = mapperUtil;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
-        this.auth = auth;
     }
 
     @Override
@@ -90,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTaskByStatusIsNot(Status status) {
-        User user = userRepository.findByUserName(auth.getAuthentication().getName());
+        User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Task> list = taskRepository.findAllByStatusIsNotAndAssignedEmployee(status, user);
         return list.stream().map(task -> mapperUtil.convert(task, new TaskDTO())).collect(Collectors.toList());
     }
@@ -98,14 +96,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTaskByProjectManager() {
-        User user = userRepository.findByUserName(auth.getAuthentication().getName());
+        User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Task> tasks = taskRepository.findAllByProjectAssignedManager(user);
         return tasks.stream().map(task -> mapperUtil.convert(task, new TaskDTO())).collect(Collectors.toList());
     }
 
     @Override
     public List<TaskDTO> listAllTaskByStatus(Status status) {
-        User user = userRepository.findByUserName(auth.getAuthentication().getName());
+        User user = userRepository.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         List<Task> list = taskRepository.findAllByStatusIsAndAssignedEmployee(status, user);
         return list.stream().map(task -> mapperUtil.convert(task, new TaskDTO())).collect(Collectors.toList());
     }

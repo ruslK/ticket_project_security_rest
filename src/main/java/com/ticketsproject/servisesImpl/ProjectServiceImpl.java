@@ -7,11 +7,11 @@ import com.ticketsproject.entities.User;
 import com.ticketsproject.enums.Status;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.ProjectRepository;
-import com.ticketsproject.servises.AuthenticationFacadeService;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +24,14 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserService userService;
     private final TaskService taskService;
     private final MapperUtil mapper;
-    private final AuthenticationFacadeService authenticationFacadeService;
 
 
     public ProjectServiceImpl(ProjectRepository projectRepository, UserService userService,
-                              TaskService taskService, MapperUtil mapper, AuthenticationFacadeService authenticationFacadeService) {
+                              TaskService taskService, MapperUtil mapper) {
         this.projectRepository = projectRepository;
         this.userService = userService;
         this.taskService = taskService;
         this.mapper = mapper;
-        this.authenticationFacadeService = authenticationFacadeService;
     }
 
     @Override
@@ -85,7 +83,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> getAllProjectByManagerId() {
-        UserDTO manager = userService.findByUserName(authenticationFacadeService.getAuthentication().getName());
+        UserDTO manager = userService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
         return projectRepository.findAllByManagerId(manager.getId()).stream()
                 .map(project -> {
                     ProjectDTO obj = mapper.convert(project, new ProjectDTO());

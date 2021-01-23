@@ -24,6 +24,7 @@
 //
 //    @Override
 //    public void run(String... args) throws Exception {
+//        System.out.println(passwordEncoder.encode("admin"));
 //        Role rAdmin = new Role();
 //        Role rManager= new Role();
 //        Role eEmployee= new Role();

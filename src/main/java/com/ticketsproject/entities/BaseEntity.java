@@ -1,6 +1,5 @@
 package com.ticketsproject.entities;
 
-import com.ticketsproject.servises.AuthenticationFacadeService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
+@EntityListeners(BaseEntityListener.class)
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,19 +32,5 @@ public class BaseEntity {
     private Long lustUpdateUserId;
 
     private Boolean isDeleted = false;
-
-    @PrePersist
-    private void onPrePersist() {
-        this.insertDateTime = LocalDateTime.now();
-        this.lastUpdateDateTime = LocalDateTime.now();
-        this.insertUserId = 1L;
-        this.lustUpdateUserId = 1L;
-    }
-
-    @PreUpdate
-    private void onPreUpdate() {
-        this.lastUpdateDateTime = LocalDateTime.now();
-        this.lustUpdateUserId = 1L;
-    }
 
 }
