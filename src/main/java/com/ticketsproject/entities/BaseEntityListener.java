@@ -1,6 +1,5 @@
 package com.ticketsproject.entities;
 
-import com.ticketsproject.entities.common.UserPrinciple;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +17,12 @@ public class BaseEntityListener extends AuditingEntityListener {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         baseEntity.setInsertDateTime(LocalDateTime.now());
         baseEntity.setLastUpdateDateTime(LocalDateTime.now());
-
+        baseEntity.setInsertUserId(1L);
+        baseEntity.setLustUpdateUserId(1L);
         if (authentication != null && !authentication.getName().equals("anonymousUser")) {
-            Object obj = authentication.getPrincipal();
-            baseEntity.setInsertUserId(((UserPrinciple) obj).getId());
-            baseEntity.setLustUpdateUserId(((UserPrinciple) obj).getId());
+            long id = Long.parseLong(authentication.getName());
+            baseEntity.setInsertUserId(id);
+            baseEntity.setLustUpdateUserId(id);
         }
     }
 
@@ -30,10 +30,10 @@ public class BaseEntityListener extends AuditingEntityListener {
     private void onPreUpdate(BaseEntity baseEntity) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         baseEntity.setLastUpdateDateTime(LocalDateTime.now());
-
+        baseEntity.setLustUpdateUserId(1L);
         if (authentication != null && !authentication.getName().equals("anonymousUser")) {
-            Object obj = authentication.getPrincipal();
-            baseEntity.setLustUpdateUserId(((UserPrinciple) obj).getId());
+            long id = Long.parseLong(authentication.getName());
+            baseEntity.setLustUpdateUserId(id);
         }
     }
 

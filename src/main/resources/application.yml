@@ -1,0 +1,44 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: ticket-project-rest
+  profiles:
+    active: defaul
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ticket_project_db
+    username: postgres
+    password: qawsed1234
+    driver-class-name: org.postgresql.Driver
+#    initialization-mode: always
+    data: classpath:data.sql
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      transport:
+        protocol: smtp
+      smtp:
+        starttls:
+          enabled: true
+          required: true
+        auth: true
+        connectiontimeout: 5000
+        timeout: 5000
+        writetimeout: 5000
+    username: cybertekschool.email@gmail.com
+    password: Cybertekschool@2020
+security:
+  jwt:
+    secret-key: cybertek
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
