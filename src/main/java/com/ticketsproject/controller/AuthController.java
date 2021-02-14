@@ -13,6 +13,7 @@ import com.ticketsproject.util.JWTUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DefaultExceptionMessage(defaultMessage = "Bad Credential")
     @Operation(summary = "Login to Application", description = "Authentication of account")
     public ResponseEntity<ResponseWrapper> getToken(@RequestBody AuthenticationRequest body) throws TicketingProjectException, AccessDeniedException {

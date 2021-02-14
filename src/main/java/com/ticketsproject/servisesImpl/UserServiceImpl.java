@@ -1,6 +1,7 @@
 package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.ProjectDTO;
+import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.dto.TaskDTO;
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.User;
@@ -8,6 +9,7 @@ import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.UserRepository;
 import com.ticketsproject.servises.ProjectService;
+import com.ticketsproject.servises.RoleService;
 import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.context.annotation.Lazy;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,16 +29,18 @@ public class UserServiceImpl implements UserService {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
 
-    public UserServiceImpl(UserRepository userRepository,
+    public UserServiceImpl(@Lazy UserRepository userRepository,
                            MapperUtil mapperUtil, TaskService taskService,
-                           @Lazy ProjectService projectService, PasswordEncoder passwordEncoder) {
+                           @Lazy ProjectService projectService, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.mapperUtil = mapperUtil;
         this.taskService = taskService;
         this.projectService = projectService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
@@ -51,17 +56,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void save(UserDTO dto) {
-        dto.setEnabled(true);
+        dto.setEnabled(false);
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         User user = userRepository.findByUserName(dto.getUserName());
 
         if (user != null) {
             Long id = user.getId();
+            dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
             User updatedUser = mapperUtil.convert(dto, new User());
             updatedUser.setId(id);
             userRepository.save(updatedUser);
         } else {
+            dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
             userRepository.save(mapperUtil.convert(dto, new User()));
         }
     }
