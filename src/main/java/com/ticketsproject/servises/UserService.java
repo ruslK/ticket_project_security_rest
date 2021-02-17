@@ -12,7 +12,7 @@ public interface UserService {
 
     UserDTO findByUserName(String username);
 
-    void save(UserDTO dto);
+    UserDTO save(UserDTO dto);
 
     UserDTO update(UserDTO dto);
 
@@ -23,4 +23,6 @@ public interface UserService {
     List<UserDTO> findEmployees();
 
     Boolean checkIfUserCanBeDelete(User user);
+
+    UserDTO confirm(User user);
 }

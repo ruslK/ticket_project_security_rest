@@ -57,8 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(UserDTO dto) {
-        dto.setEnabled(false);
+    public UserDTO save(UserDTO dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         User user = userRepository.findByUserName(dto.getUserName());
 
@@ -67,10 +66,12 @@ public class UserServiceImpl implements UserService {
             dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
             User updatedUser = mapperUtil.convert(dto, new User());
             updatedUser.setId(id);
-            userRepository.save(updatedUser);
+            return mapperUtil
+                    .convert(userRepository.save(mapperUtil.convert(dto, new User())), new UserDTO());
         } else {
             dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
-            userRepository.save(mapperUtil.convert(dto, new User()));
+            return mapperUtil
+                    .convert(userRepository.save(mapperUtil.convert(dto, new User())), new UserDTO());
         }
     }
 
@@ -122,5 +123,14 @@ public class UserServiceImpl implements UserService {
             default:
                 return true;
         }
+    }
+
+    @Override
+    public UserDTO confirm(User user) {
+        user.setEnabled(true);
+        User foundUser = userRepository.save(user);
+        return mapperUtil.convert(foundUser, new UserDTO());
+
+
     }
 }
