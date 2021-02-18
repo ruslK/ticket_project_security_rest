@@ -5,6 +5,7 @@ import com.ticketsproject.enums.Status;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/api/v1/employee")
+@Tag(name = "Employee Controller", description = "API for Employees")
 public class EmployeeController {
 
     private final TaskService taskService;

@@ -38,7 +38,6 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DefaultExceptionMessage(defaultMessage = "Bad Credential")
     @Operation(summary = "Login to Application", description = "Authentication of account")
     public ResponseEntity<ResponseWrapper> getToken(@RequestBody AuthenticationRequest body) throws TicketingProjectException, AccessDeniedException {

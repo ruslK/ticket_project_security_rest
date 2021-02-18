@@ -12,9 +12,9 @@ public interface UserService {
 
     UserDTO findByUserName(String username);
 
-    UserDTO save(UserDTO dto);
+    UserDTO save(UserDTO dto) throws TicketingProjectException;
 
-    UserDTO update(UserDTO dto);
+    UserDTO update(UserDTO dto) throws TicketingProjectException;
 
     void delete(String username) throws TicketingProjectException;
 
@@ -25,4 +25,6 @@ public interface UserService {
     Boolean checkIfUserCanBeDelete(User user);
 
     UserDTO confirm(User user);
+
+    List<UserDTO> listAllByRole(String role);
 }

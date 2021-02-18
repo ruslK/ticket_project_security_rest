@@ -1,5 +1,7 @@
 package com.ticketsproject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ticketsproject.enums.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 @Where(clause = "is_deleted=false")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"}, ignoreUnknown = true)
 public class User extends BaseEntity {
 
     public User(String firstName, String lastName, String userName, String phone, String password, boolean enabled, Gender gender) {
@@ -36,6 +39,7 @@ public class User extends BaseEntity {
     private String lastName;
     private String userName;
     private String phone;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private boolean enabled;
     @Enumerated(EnumType.STRING)

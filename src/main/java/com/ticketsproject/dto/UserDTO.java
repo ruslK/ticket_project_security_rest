@@ -1,6 +1,7 @@
 package com.ticketsproject.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ticketsproject.enums.Gender;
 import lombok.*;
@@ -10,9 +11,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"}, ignoreUnknown = true)
 public class UserDTO {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     private String firstName;
     private String lastName;

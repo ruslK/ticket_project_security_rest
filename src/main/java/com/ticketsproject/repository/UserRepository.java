@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u JOIN Role r on r.id = u.role.id " +
             "where r.description = 'Employee'")
     List<User> listOfEmployees();
+
+    List<User> findAllByRoleDescriptionIgnoreCase(String description);
 }

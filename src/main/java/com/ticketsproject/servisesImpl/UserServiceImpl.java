@@ -57,17 +57,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO save(UserDTO dto) {
+    public UserDTO save(UserDTO dto) throws TicketingProjectException {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         User user = userRepository.findByUserName(dto.getUserName());
 
         if (user != null) {
-            Long id = user.getId();
-            dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
-            User updatedUser = mapperUtil.convert(dto, new User());
-            updatedUser.setId(id);
-            return mapperUtil
-                    .convert(userRepository.save(mapperUtil.convert(dto, new User())), new UserDTO());
+            throw new TicketingProjectException("User with username: " + dto.getUserName() + " is already exist");
         } else {
             dto.setRole(roleService.findByDescription(dto.getRole().getDescription()));
             return mapperUtil
@@ -76,8 +71,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UserDTO dto) {
-        return null;
+    public UserDTO update(UserDTO dto) throws TicketingProjectException {
+
+        //Find current user
+        User user = userRepository.findByUserName(dto.getUserName());
+
+        if(user == null){
+            throw new TicketingProjectException("User Does Not Exists");
+        }
+        //Map update user dto to entity object
+        User convertedUser = mapperUtil.convert(dto,new User());
+        convertedUser.setPassword(passwordEncoder.encode(convertedUser.getPassword()));
+        convertedUser.setEnabled(true);
+
+        //set id to the converted object
+        convertedUser.setId(user.getId());
+        //save updated user
+        userRepository.save(convertedUser);
+
+        return findByUserName(dto.getUserName());
     }
 
     @Override
@@ -132,5 +144,11 @@ public class UserServiceImpl implements UserService {
         return mapperUtil.convert(foundUser, new UserDTO());
 
 
+    }
+
+    @Override
+    public List<UserDTO> listAllByRole(String role) {
+        List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
+        return users.stream().map(obj -> {return mapperUtil.convert(obj,new UserDTO());}).collect(Collectors.toList());
     }
 }

@@ -5,6 +5,7 @@ import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.Project;
 import com.ticketsproject.entities.User;
 import com.ticketsproject.enums.Status;
+import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.ProjectRepository;
 import com.ticketsproject.servises.ProjectService;
@@ -43,20 +44,28 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void save(ProjectDTO dto) {
-        Project project = projectRepository.findAllByProjectCode(dto.getProjectCode());
+    public ProjectDTO save(ProjectDTO dto) throws TicketingProjectException {
+        Project foundProject = projectRepository.findAllByProjectCode(dto.getProjectCode());
 
-        if (project != null) {
-            Long id = project.getId();
-            Project updatedProject = mapper.convert(dto, new Project());
-            updatedProject.setProjectStatus(project.getProjectStatus());
-            updatedProject.setId(id);
-            projectRepository.save(updatedProject);
-        } else {
-            Project project1 = mapper.convert(dto, new Project());
-            project1.setProjectStatus(Status.OPEN);
-            projectRepository.save(project1);
+        if (foundProject != null) {
+            throw new TicketingProjectException("Project with " + dto.getProjectCode() + " already exist");
         }
+
+        dto.setProjectStatus(Status.OPEN);
+        Project project1 = mapper.convert(dto, new Project());
+        return mapper.convert(projectRepository.save(project1), new ProjectDTO());
+    }
+
+    @Override
+    public ProjectDTO update(ProjectDTO dto) throws TicketingProjectException {
+        Project project = projectRepository.findAllByProjectCode(dto.getProjectCode());
+        if (project == null) {
+            throw new TicketingProjectException("Project is not exist");
+        }
+        Project convertedProject = mapper.convert(dto, new Project());
+        convertedProject.setId(project.getId());
+        convertedProject.setProjectStatus(project.getProjectStatus());
+        return mapper.convert(projectRepository.save(convertedProject), new ProjectDTO());
     }
 
     @Override
@@ -83,8 +92,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> getAllProjectByManagerId() {
-        UserDTO manager = userService.findByUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-        return projectRepository.findAllByManagerId(manager.getId()).stream()
+        Long id = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+
+
+        return projectRepository.findAllByManagerId(id).stream()
                 .map(project -> {
                     ProjectDTO obj = mapper.convert(project, new ProjectDTO());
                     obj.setCompleteCount(taskService.totalCompletedTask(obj.getProjectCode()));

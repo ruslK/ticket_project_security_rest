@@ -1,6 +1,7 @@
 package com.ticketsproject.controller.administrator;
 
 import com.ticketsproject.dto.ProjectDTO;
+import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.servises.ProjectService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,7 @@ public class ManageProjectsController {
     }
 
     @PostMapping("/projects")
-    public String postNewProject(@ModelAttribute ProjectDTO newProject) {
+    public String postNewProject(@ModelAttribute ProjectDTO newProject) throws TicketingProjectException {
         projectService.save(newProject);
         return "redirect:/administrator/projects";
     }

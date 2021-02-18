@@ -2,6 +2,7 @@ package com.ticketsproject.servises;
 
 import com.ticketsproject.dto.ProjectDTO;
 import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.TicketingProjectException;
 
 
 import java.util.List;
@@ -9,7 +10,8 @@ import java.util.List;
 public interface ProjectService {
     List<ProjectDTO> listOfProjects();
 
-    void save(ProjectDTO dto);
+    ProjectDTO save(ProjectDTO dto) throws TicketingProjectException;
+    ProjectDTO update(ProjectDTO dto) throws TicketingProjectException;
 
     void deleteByProjectCode(String projectCode);
 
