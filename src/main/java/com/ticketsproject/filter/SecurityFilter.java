@@ -1,8 +1,10 @@
 package com.ticketsproject.filter;
 
 import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.AccessDeniedException;
 import com.ticketsproject.servises.SecurityService;
 import com.ticketsproject.util.JWTUtil;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         this.securityService = securityService;
     }
 
+    @SneakyThrows
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
@@ -53,8 +56,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private boolean checkIfUserIsValid(String username) {
+    private boolean checkIfUserIsValid(String username) throws AccessDeniedException {
         User currentUser = securityService.loadUser(username);
-        return currentUser != null && currentUser.isEnabled();
+        return currentUser != null && currentUser.getEnabled();
     }
 }

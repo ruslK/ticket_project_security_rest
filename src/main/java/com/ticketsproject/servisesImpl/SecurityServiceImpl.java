@@ -2,9 +2,11 @@ package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.AccessDeniedException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.servises.SecurityService;
 import com.ticketsproject.servises.UserService;
+import lombok.SneakyThrows;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,7 @@ public class SecurityServiceImpl implements SecurityService {
         this.mapperUtil = mapperUtil;
     }
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserDTO user = userService.findByUserName(s);
@@ -42,7 +45,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public User loadUser(String param) {
+    public User loadUser(String param) throws AccessDeniedException {
         UserDTO userDTO = userService.findByUserName(param);
         return mapperUtil.convert(userDTO, new User());
     }

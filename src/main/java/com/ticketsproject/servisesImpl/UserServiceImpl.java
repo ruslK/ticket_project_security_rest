@@ -1,10 +1,10 @@
 package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.ProjectDTO;
-import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.dto.TaskDTO;
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.AccessDeniedException;
 import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.UserRepository;
@@ -14,11 +14,15 @@ import com.ticketsproject.servises.TaskService;
 import com.ticketsproject.servises.UserService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,8 +55,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByUserName(String username) {
-        return mapperUtil.convert(userRepository.findByUserName(username), new UserDTO());
+    public UserDTO findByUserName(String username) throws AccessDeniedException {
+        User foundUser = userRepository.findByUserName(username);
+        this.checkForAuthorities(foundUser);
+        return mapperUtil.convert(foundUser, new UserDTO());
     }
 
     @Override
@@ -71,17 +77,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UserDTO dto) throws TicketingProjectException {
+    public UserDTO update(UserDTO dto) throws TicketingProjectException, AccessDeniedException {
 
         //Find current user
         User user = userRepository.findByUserName(dto.getUserName());
 
-        if(user == null){
+        if (user == null) {
             throw new TicketingProjectException("User Does Not Exists");
         }
         //Map update user dto to entity object
-        User convertedUser = mapperUtil.convert(dto,new User());
+        User convertedUser = mapperUtil.convert(dto, new User());
         convertedUser.setPassword(passwordEncoder.encode(convertedUser.getPassword()));
+
+        if (!user.getEnabled()) {
+            throw new TicketingProjectException("User is not confirmed");
+        }
+
+        this.checkForAuthorities(user);
         convertedUser.setEnabled(true);
 
         //set id to the converted object
@@ -149,6 +161,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllByRole(String role) {
         List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
-        return users.stream().map(obj -> {return mapperUtil.convert(obj,new UserDTO());}).collect(Collectors.toList());
+        return users.stream().map(obj -> {
+            return mapperUtil.convert(obj, new UserDTO());
+        }).collect(Collectors.toList());
+    }
+
+    private void checkForAuthorities(User user) throws AccessDeniedException {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && !authentication.getName().equals("anonymousUser")) {
+            Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
+
+            if(!(authentication.getName().equals(user.getId().toString()) || roles.contains("Admin"))) {
+                throw new AccessDeniedException("Access is Denied");
+            }
+        }
     }
 }

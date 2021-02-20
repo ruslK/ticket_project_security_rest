@@ -5,6 +5,7 @@ import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.ConfirmationToken;
 import com.ticketsproject.entities.ResponseWrapper;
 import com.ticketsproject.entities.User;
+import com.ticketsproject.exception.AccessDeniedException;
 import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.servises.ConfirmationTokenService;
@@ -43,7 +44,7 @@ public class UserController {
     @PostMapping("/create-user")
     @Operation(summary = "Create an User", description = "Creating a new User")
     @PreAuthorize("hasAnyAuthority('Admin')")
-    public ResponseEntity<ResponseWrapper> postUsers(@RequestBody UserDTO newUser) throws TicketingProjectException {
+    public ResponseEntity<ResponseWrapper> postUsers(@RequestBody UserDTO newUser) throws TicketingProjectException, AccessDeniedException {
         UserDTO createUser = userService.save(newUser);
 
         this.sendEmail(this.createEmail(createUser));
@@ -69,8 +70,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     @Operation(summary = "Read User", description = "Read Specific User Info")
-    @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<ResponseWrapper> readByUserName(@PathVariable("username") String username) {
+    public ResponseEntity<ResponseWrapper> readByUserName(@PathVariable("username") String username) throws AccessDeniedException {
         return ResponseEntity
                 .ok(new ResponseWrapper("User retrieved", userService.findByUserName(username)));
     }
@@ -79,7 +79,7 @@ public class UserController {
     @PutMapping
     @Operation(summary = "Update User", description = "Update Specific User Info")
     @PreAuthorize("hasAuthority('Admin')")
-    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user) throws TicketingProjectException {
+    public ResponseEntity<ResponseWrapper> updateUser(@RequestBody UserDTO user) throws TicketingProjectException, AccessDeniedException {
         return ResponseEntity
                 .ok(new ResponseWrapper("User updated", userService.update(user)));
     }

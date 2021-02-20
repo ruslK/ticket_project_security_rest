@@ -69,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteByProjectCode(String projectCode) {
+    public void deleteByProjectCode(String projectCode) throws TicketingProjectException {
         Project project = projectRepository.findAllByProjectCode(projectCode);
         project.setIsDeleted(true);
         project.setProjectCode(project.getProjectCode() + "-" + project.getId());

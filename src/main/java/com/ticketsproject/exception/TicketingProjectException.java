@@ -1,6 +1,8 @@
 package com.ticketsproject.exception;
 
-public class TicketingProjectException extends Exception{
+import java.util.function.Supplier;
+
+public class TicketingProjectException extends Exception {
 
     public TicketingProjectException(String message) {
         super(message);

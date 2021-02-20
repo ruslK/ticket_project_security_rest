@@ -2,6 +2,7 @@ package com.ticketsproject.servisesImpl;
 
 import com.ticketsproject.dto.RoleDTO;
 import com.ticketsproject.entities.Role;
+import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.RoleRepository;
 import com.ticketsproject.servises.RoleService;
@@ -28,8 +29,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDTO findById(long id) {
-        return mapper.convert(roleRepository.findById(id).get(), new RoleDTO());
+    public RoleDTO findById(long id) throws TicketingProjectException {
+
+        return mapper.convert(
+                roleRepository.findById(id).orElseThrow(() -> new TicketingProjectException("Role does not exist")),
+                new RoleDTO());
     }
 
     @Override
