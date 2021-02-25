@@ -1,6 +1,7 @@
 package com.ticketsproject.controller;
 
 import com.ticketsproject.annotation.DefaultExceptionMessage;
+import com.ticketsproject.annotation.ExecutionTime;
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.User;
 import com.ticketsproject.entities.common.AuthenticationRequest;
@@ -38,6 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
+    @ExecutionTime
     @DefaultExceptionMessage(defaultMessage = "Bad Credential")
     @Operation(summary = "Login to Application", description = "Authentication of account")
     public ResponseEntity<ResponseWrapper> getToken(@RequestBody AuthenticationRequest body) throws TicketingProjectException, AccessDeniedException {

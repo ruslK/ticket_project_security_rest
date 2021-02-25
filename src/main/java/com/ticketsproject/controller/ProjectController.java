@@ -1,5 +1,6 @@
 package com.ticketsproject.controller;
 
+import com.ticketsproject.annotation.ExecutionTime;
 import com.ticketsproject.dto.ProjectDTO;
 import com.ticketsproject.entities.ResponseWrapper;
 import com.ticketsproject.exception.TicketingProjectException;
@@ -27,6 +28,7 @@ public class ProjectController {
     @GetMapping
     @Operation(summary = "Get All Project", description = "Get list of All Project")
     @PreAuthorize("hasAnyAuthority('Admin', 'Manager')")
+    @ExecutionTime
     public ResponseEntity<ResponseWrapper> readAll() {
         return ResponseEntity.ok(new ResponseWrapper("All Project", projectService.listOfProjects()));
     }

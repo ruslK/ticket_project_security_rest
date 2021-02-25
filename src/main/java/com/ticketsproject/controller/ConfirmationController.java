@@ -1,5 +1,6 @@
 package com.ticketsproject.controller;
 
+import com.ticketsproject.annotation.ExecutionTime;
 import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.ConfirmationToken;
 import com.ticketsproject.entities.ResponseWrapper;
@@ -28,6 +29,7 @@ public class ConfirmationController {
 
     @RequestMapping(value = "/confirmation", method = RequestMethod.GET)
     @Operation(summary = "Confirm Account", description = "Confirmation of Email")
+    @ExecutionTime
     public ResponseEntity<ResponseWrapper> confirmEmail(@RequestParam(value = "token") String token) throws TicketingProjectException {
         ConfirmationToken confirmationToken = confirmationTokenService.readByToken(token);
         UserDTO confirmUser = userService.confirm(confirmationToken.getUser());
