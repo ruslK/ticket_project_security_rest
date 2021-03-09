@@ -1,9 +1,6 @@
 package com.ticketsproject.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,9 +16,22 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @Table (name = "roles")
+@Builder
 public class Role extends BaseEntity{
     private String description;
 
+    public Role(Long id, String description) {
+        this.description = description;
+        super.setId(id);
+    }
+
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     private List<User> users = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "description='" + description + '\'' +
+                '}';
+    }
 }

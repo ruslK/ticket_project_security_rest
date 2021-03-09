@@ -12,6 +12,8 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     Project findAllByProjectCode(String projectCode);
 
+    Project findByProjectCode(String projectCode);
+
     @Query("select p from Project p where p.assignedManager.id = :id")
     List<Project> findAllByManagerId(Long id);
 

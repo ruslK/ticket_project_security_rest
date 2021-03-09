@@ -5,6 +5,7 @@ import com.ticketsproject.dto.UserDTO;
 import com.ticketsproject.entities.Project;
 import com.ticketsproject.entities.User;
 import com.ticketsproject.enums.Status;
+import com.ticketsproject.exception.AccessDeniedException;
 import com.ticketsproject.exception.TicketingProjectException;
 import com.ticketsproject.mapper.MapperUtil;
 import com.ticketsproject.repository.ProjectRepository;
@@ -26,7 +27,6 @@ public class ProjectServiceImpl implements ProjectService {
     private final TaskService taskService;
     private final MapperUtil mapper;
 
-
     public ProjectServiceImpl(ProjectRepository projectRepository, UserService userService,
                               TaskService taskService, MapperUtil mapper) {
         this.projectRepository = projectRepository;
@@ -44,27 +44,30 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDTO save(ProjectDTO dto) throws TicketingProjectException {
-        Project foundProject = projectRepository.findAllByProjectCode(dto.getProjectCode());
+    public ProjectDTO save(ProjectDTO project) throws TicketingProjectException, AccessDeniedException {
+        Project foundProject = projectRepository.findAllByProjectCode(project.getProjectCode());
 
         if (foundProject != null) {
-            throw new TicketingProjectException("Project with " + dto.getProjectCode() + " already exist");
+            throw new TicketingProjectException("Project with " + project.getProjectCode() + " already exist");
         }
-
-        dto.setProjectStatus(Status.OPEN);
-        Project project1 = mapper.convert(dto, new Project());
-        return mapper.convert(projectRepository.save(project1), new ProjectDTO());
+        UserDTO manager = userService.findByUserName(project.getAssignedManager().getUserName());
+        project.setProjectStatus(Status.OPEN);
+        project.setAssignedManager(manager);
+        return mapper.convert(projectRepository.save(mapper.convert(project, new Project())), new ProjectDTO());
     }
 
     @Override
-    public ProjectDTO update(ProjectDTO dto) throws TicketingProjectException {
+    public ProjectDTO update(ProjectDTO dto) throws TicketingProjectException, AccessDeniedException {
         Project project = projectRepository.findAllByProjectCode(dto.getProjectCode());
+
         if (project == null) {
             throw new TicketingProjectException("Project is not exist");
         }
         Project convertedProject = mapper.convert(dto, new Project());
         convertedProject.setId(project.getId());
         convertedProject.setProjectStatus(project.getProjectStatus());
+        convertedProject.setAssignedManager(
+                mapper.convert(userService.findByUserName(dto.getAssignedManager().getUserName()), new User()));
         return mapper.convert(projectRepository.save(convertedProject), new ProjectDTO());
     }
 
@@ -79,8 +82,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectDTO findByProjectCode(String projectCode) {
-        return mapper.convert(projectRepository.findAllByProjectCode(projectCode), new ProjectDTO());
+    public ProjectDTO findByProjectCode(String projectCode) throws TicketingProjectException {
+        Project prj = projectRepository.findByProjectCode(projectCode);
+        if (prj == null) {
+            throw new TicketingProjectException("Project with Project Code: " + projectCode + " not found");
+        }
+        return mapper.convert(prj, new ProjectDTO());
     }
 
     @Override

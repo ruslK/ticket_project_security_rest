@@ -12,6 +12,7 @@ import lombok.*;
 @Setter
 @ToString
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"}, ignoreUnknown = true)
+@Builder
 public class UserDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

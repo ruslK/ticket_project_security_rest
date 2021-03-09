@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
+@Builder
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer"}, ignoreUnknown = true)
 public class RoleDTO {
     private Long id;
